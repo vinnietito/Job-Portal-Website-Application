@@ -1,3 +1,10 @@
+# Environment files (VERY IMPORTANT)
+.env
+.env.local
+.env.*.local
+.env.*
+
+
 # Logs
 logs
 *.log
