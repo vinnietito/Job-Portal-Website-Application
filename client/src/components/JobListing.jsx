@@ -15,7 +15,7 @@ const JobListing = () => {
         <div className='container 2xl:px-20 mx-auto flex flex-col lg:flex-row max-lg:space-y-8 py-8'>
 
             {/* SideBar */}
-            <div className='w-full lg:w-1/4 px-4 bg-white'>
+            <div className='w-full lg:w-1/4 px-4 bg-white max-h-[calc(100vh-100px)] overflow-y-auto sticky top-[100px]'>
 
                 {/* Search Filters from Hero Component */}
                 {
