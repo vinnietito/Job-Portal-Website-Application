@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useParams } from "react-router-dom"
 import { AppContext } from '../context/AppContext'
+import Loading from '../components/Loading'
 
 
 
@@ -27,15 +28,12 @@ const ApplyJob = () => {
 
   }, [id, jobs])
 
-  return false ? (
+  return JobData ? (
     <div>
 
     </div>
   ) : (
-    <div className='min-h-screen flex items-center justify-center'>
-      <div className='w-20 h-20 border-4 border-gray-300 border-t-4 border-t-blue-400 rounded-full animate-spin'></div>
-
-    </div>
+    <Loading />
   )
 }
 
