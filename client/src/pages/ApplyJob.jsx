@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useParams } from "react-router-dom"
 import { AppContext } from '../context/AppContext'
 import Loading from '../components/Loading'
+import Navbar from '../components/Navbar'
+import { assets } from '../assets/assets'
 
 
 
@@ -29,9 +31,27 @@ const ApplyJob = () => {
   }, [id, jobs])
 
   return JobData ? (
-    <div>
-
-    </div>
+    <>
+      {/* <Navbar /> */}
+      <div>
+        <div>
+          <div>
+            <div>
+              <img src={JobData.companyId.image} alt="" />
+              <div>
+                <h1>{JobData.title}</h1>
+                <div>
+                  <span>
+                    <img src={assets.suitcase_icon} alt="" />
+                    {JobData.companyId.name}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   ) : (
     <Loading />
   )
