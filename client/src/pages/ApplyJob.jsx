@@ -4,6 +4,7 @@ import { AppContext } from '../context/AppContext'
 import Loading from '../components/Loading'
 import Navbar from '../components/Navbar'
 import { assets } from '../assets/assets'
+import kconvert from 'k-convert';
 
 
 
@@ -55,7 +56,7 @@ const ApplyJob = () => {
                   </span>
                   <span>
                     <img src={assets.money_icon} alt="" />
-                    CTC: {JobData.salary}
+                    CTC: {kconvert.convertTo(JobData.salary)}
                   </span>
                 </div>
               </div>
