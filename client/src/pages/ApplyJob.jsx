@@ -70,6 +70,14 @@ const ApplyJob = () => {
             </div>
 
           </div>
+
+        <div>
+          <div>
+            <h2>Job description</h2>
+            <div dangerouslySetInnerHTML={{__html:JobData.description}}></div>
+          </div>
+        </div>
+
         </div>
       </div>
     </>
