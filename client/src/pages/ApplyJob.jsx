@@ -80,7 +80,9 @@ const ApplyJob = () => {
           <div>
             {/* Right Section More Jobs */}
             <h2>More jobs from {JobData.companyId.name}</h2>
-            {jobs.filter( job => job._id !== JobData._id && job.companyId.id === JobData.companyId._id)}
+            {jobs.filter( job => job._id !== JobData._id && job.companyId.id === JobData.companyId._id)
+            .filter( job => true ).slice(0,4)
+            .map((job, index) => <JobCard key = {index} job={job} />)}
           </div>
         </div>
 
