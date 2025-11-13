@@ -6,6 +6,9 @@ import Navbar from '../components/Navbar'
 import { assets } from '../assets/assets'
 import kconvert from 'k-convert';
 import moment from 'moment';
+import JobCard from '../components/JobCard';
+import Footer from '../components/Footer'
+
 
 
 
@@ -77,10 +80,10 @@ const ApplyJob = () => {
             <div className='rich-text' dangerouslySetInnerHTML={{__html:JobData.description}}></div>
             <button className='bg-blue-600 p-2.5 px-10 text-white rounded mt-10'>Apply Now</button>
           </div>
-          <div>
+          <div className='w-full lg:w-1/3 mt-8 lg:mt-0 lg:ml-8 space-y-5'>
             {/* Right Section More Jobs */}
             <h2>More jobs from {JobData.companyId.name}</h2>
-            {jobs.filter( job => job._id !== JobData._id && job.companyId.id === JobData.companyId._id)
+            {jobs.filter( job => job._id !== JobData._id && job.companyId._id === JobData.companyId._id)
             .filter( job => true ).slice(0,4)
             .map((job, index) => <JobCard key = {index} job={job} />)}
           </div>
@@ -88,6 +91,7 @@ const ApplyJob = () => {
 
         </div>
       </div>
+      <Footer />
     </>
   ) : (
     <Loading />
