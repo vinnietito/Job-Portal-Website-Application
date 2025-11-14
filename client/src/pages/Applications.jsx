@@ -32,8 +32,17 @@ const Applications = () => {
               </button>
             </div>
           }
-
         </div>
+        <h2>Jobs Applied</h2>
+        <table>
+          <thead>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </thead>
+        </table>
       </div>
     </>
   )
