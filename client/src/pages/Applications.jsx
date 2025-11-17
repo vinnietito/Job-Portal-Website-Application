@@ -36,12 +36,13 @@ const Applications = () => {
         <h2>Jobs Applied</h2>
         <table>
           <thead>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>Company</th>
+            <th>Job Title</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Status</th>
           </thead>
+          
         </table>
       </div>
     </>
