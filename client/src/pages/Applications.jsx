@@ -43,7 +43,18 @@ const Applications = () => {
             <th>Status</th>
           </thead>
           <tbody>
-            {jobsApplied.map((job, index) => job.jobId)}
+            {jobsApplied.map((job, index) => true ? (
+              <tr>
+                <td>
+                  <img src={job.logo} alt="" />
+                  {job.company}
+                </td>
+                <td>{job.title}</td>
+                <td>{job.location}</td>
+                <td>{moment(job.date).format('ll')}</td>
+                <td>{job.status}</td>
+              </tr>
+            ) : (null) )}
           </tbody>
         </table>
       </div>
