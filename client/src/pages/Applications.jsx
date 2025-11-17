@@ -7,6 +7,8 @@ const Applications = () => {
   const [isEdit, setIsEdit] = useState(false)
   const [resume, setResume] = useState(null)
 
+  const [jobsApplied, setJobsApplied] = useState([])
+
   return (
     <>
       <Navbar />
@@ -36,11 +38,13 @@ const Applications = () => {
         <h2>Jobs Applied</h2>
         <table>
           <thead>
+            <tr>
             <th>Company</th>
             <th>Job Title</th>
             <th>Location</th>
             <th>Date</th>
             <th>Status</th>
+            </tr>
           </thead>
           <tbody>
             {jobsApplied.map((job, index) => true ? (
