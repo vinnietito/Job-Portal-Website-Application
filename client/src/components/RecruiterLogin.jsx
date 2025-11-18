@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { assets } from '../assets/assets'
 import e from 'cors'
+import { AppContext } from '../context/AppContext'
 
 const RecruiterLogin = () => {
 
@@ -12,6 +13,8 @@ const RecruiterLogin = () => {
   const [image, setImage] = useState(false)
 
   const [isTextDataSubmitted, setIsTextDataSubmitted] = useState(false)
+
+  const {setShowRecruiterLogin} = useContext(AppContext)
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -61,9 +64,9 @@ const RecruiterLogin = () => {
 
           </>}
 
-        <p className='text-sm text-blue-600 my-4 cursor-pointer'>Forgot Password</p>
+        {state === "Login" && <p className='text-sm text-blue-600 my-4 cursor-pointer'>Forgot Password</p>}
 
-        <button type='submit' className='bg-blue-600 text-white px-6 py-2 rounded-full w-full '>
+        <button type='submit' className='bg-blue-600 text-white px-6 py-2 rounded-full w-full mt-4'>
           {state === 'Login' ? 'login' : isTextDataSubmitted ? 'create account' : 'next'}
         </button>
 
@@ -72,6 +75,8 @@ const RecruiterLogin = () => {
             ? <p className='mt-5 text-center'>Don't have an account? <span className='text-blue-600 cursor-pointer' onClick={() => setState("Sign Up")}>Sign Up</span></p>
             : <p className='mt-5 text-center'>Already ahve an account? <span className='text-blue-600 cursor-pointer' onClick={() => setState("Login")}>Login</span></p>
         }
+
+        <img onClick={e => setShowRecruiterLogin(false)} className='absolute top-5 right-5 cursor-pointer' src={assets.cross_icon} alt="" />
 
       </form>
     </div>
