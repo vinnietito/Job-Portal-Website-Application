@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { assets } from '../assets/assets'
+import moment from 'moment'
+import { jobsApplied } from '../assets/assets';
+
 
 const Applications = () => {
 
   const [isEdit, setIsEdit] = useState(false)
   const [resume, setResume] = useState(null)
 
-  const [jobsApplied, setJobsApplied] = useState([])
+  // const [jobsApplied, setJobsApplied] = useState([])
 
   return (
     <>
@@ -50,8 +53,8 @@ const Applications = () => {
             {jobsApplied.map((job, index) => true ? (
               <tr>
                 <td>
-                  <img src={job.logo} alt="" />
-                  {job.company}
+                 <img src={job.logo} alt="" />
+                 {job.company}
                 </td>
                 <td>{job.title}</td>
                 <td>{job.location}</td>
