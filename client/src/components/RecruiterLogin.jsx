@@ -9,7 +9,7 @@ const RecruiterLogin = () => {
 
     const [image, setImage] = useState(false)
 
-    cosnt [isTextDataSubmitted, setIsTextDataSubmitted] = useState(false)
+    const [isTextDataSubmitted, setIsTextDataSubmitted] = useState(false)
 
 
   return (
