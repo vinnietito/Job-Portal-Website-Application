@@ -12,19 +12,19 @@ import ViewApplications from './pages/ViewApplications'
 
 const App = () => {
 
-  const {showRecruiterLogin} = useContext(AppContext)
+  const { showRecruiterLogin } = useContext(AppContext)
 
   return (
     <div>
-      { showRecruiterLogin &&  <RecruiterLogin />}
+      {showRecruiterLogin && <RecruiterLogin />}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/apply-job/:id' element={<ApplyJob />} />
         <Route path='/applications' element={<Applications />} />
         <Route path='/dashboard' element={<Dashboard />}>
-          <Route path='add-job' element={ <AddJob />} />
-          <Route path='manage-jobs' element={ <ManageJobs />} />
-          <Route path='view-applications' element={ <ViewApplications />} />
+          <Route path='add-job' element={<AddJob />} />
+          <Route path='manage-jobs' element={<ManageJobs />} />
+          <Route path='view-applications' element={<ViewApplications />} />
         </Route>
       </Routes>
     </div>
