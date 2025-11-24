@@ -53,7 +53,7 @@ const AddJob = () => {
               <p>Job Location</p>
               <select onChange={e => setLocation(e.target.value)}>
                 {JobLocations.map((location,index)=>(
-                  <option value={location} key={index}>{Location}</option>
+                  <option value={location} key={index}>{location}</option>
                 ))}
               </select>
             </div>
