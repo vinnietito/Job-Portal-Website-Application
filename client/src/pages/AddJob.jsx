@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Quill from 'quill'
+import { JobCategories } from '../assets/assets';
 
 const AddJob = () => {
 
@@ -41,7 +42,11 @@ const AddJob = () => {
 
             <div>
               <p>Job Category</p>
-              <select onChange={e => setCategory(e.target.value)}></select>
+              <select onChange={e => setCategory(e.target.value)}>
+                {JobCategories.map((category,index)=>(
+                  <option value={category} key={index}>{category}</option>
+                ))}
+              </select>
             </div>
 
 
