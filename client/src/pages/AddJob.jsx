@@ -24,11 +24,11 @@ const AddJob = () => {
 
   return (
     <div>
-      <form>
+      <form className='container flex flex-col items-start w-full gap-3 p-4'>
 
-          <div>
-            <p>Job Title</p>
-            <input type="text" placeholder='Type here' onChange={e => setTitle(e.target.value)} value={title} required />
+          <div className='w-full'>
+            <p className='mb-2'>Job Title</p>
+            <input className='w-full max-w-lg px-3 py-2 border-2 border-gray-300 rounded' type="text" placeholder='Type here' onChange={e => setTitle(e.target.value)} value={title} required />
           </div>
 
           <div>
@@ -66,10 +66,14 @@ const AddJob = () => {
                 <option value="Senior level">Senior level</option>
               </select>
             </div>
-            
-
-
+          
           </div>
+          <div>
+            <p>Job Salary</p>
+            <input onChange={e => setSalary(e.target.value)} type="number" placeholder='2500' />
+          </div>
+
+          <button>ADD</button>
 
       </form>
     </div>
