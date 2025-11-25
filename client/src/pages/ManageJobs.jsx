@@ -1,8 +1,13 @@
 import React from 'react'
 import { manageJobsData } from '../assets/assets'
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom'
 
 const ManageJobs = () => {
+
+  const navigate = useNavigate()
+
+
   return (
     <div className='container max-w-5xl p-4'>
       <div className='overflow-x-auto'>
@@ -26,12 +31,15 @@ const ManageJobs = () => {
                 <td className='py-2 px-4 border-4 max-sm:hidden'>{job.location}</td>
                 <td className='py-2 px-4 border-4 text-center'>{job.applicants}</td>
                 <td className='py-2 px-4 border-4'>
-                  <input type="checkbox" />
+                  <input className='scale-125 ml-4' type="checkbox" />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+      <div className='mt-4 flex justify-end'>
+        <button onClick={()=>navigate('/dashboard/add-job')} className='bg-black text-white py-2 px-4 rounded'>Add new job</button>
       </div>
     </div>
   )
