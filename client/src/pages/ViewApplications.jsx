@@ -1,4 +1,5 @@
 import React from 'react'
+import { assets, viewApplicationsPageData } from '../assets/assets'
 
 const ViewApplications = () => {
   return (
@@ -15,6 +16,31 @@ const ViewApplications = () => {
               <th>Action</th>
             </tr>
           </thead>
+          <tbody>
+            {viewApplicationsPageData.map((applicant, index)=>(
+              <tr>
+                <td>{index +1}</td>
+                <td>
+                  <img src={applicant.imgSrc} alt="" />
+                  <span>{applicant.name}</span>
+                </td>
+                <td>{applicant.jobTitle}</td>
+                <td>{applicant.location}</td>
+                <td>
+                  <a href="" target='_blank'>Resume <img src={assets.resume_download_icon} alt="" /></a>
+                </td>
+                <td>
+                  <div>
+                    <button>...</button>
+                    <div>
+                      <button>Accept</button>
+                      <button>Reject</button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
