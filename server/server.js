@@ -6,6 +6,7 @@ import cors from "cors";
 import "dotenv/config";
 import * as Sentry from "@sentry/node";
 import connectDB from "./config/db.js";
+import { clerkWebhooks } from "./controllers/webhooks.js";
 
 // Initialize Express
 const app = express();
@@ -34,6 +35,8 @@ Sentry.setupExpressErrorHandler(app);
 app.use((err, req, res, next) => {
   res.status(500).json({ message: "Internal Server Error" });
 });
+
+app.post('/webhooks', clerkWebhooks)
 
 // Port
 const PORT = process.env.PORT || 5000;
