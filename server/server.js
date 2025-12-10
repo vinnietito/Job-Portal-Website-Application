@@ -1,5 +1,6 @@
 // MUST BE FIRST — before anything else
 import "./config/instrument.js";
+import companyRoutes from "./routes/companyRoutes.js";
 
 import express from "express";
 import cors from "cors";
@@ -37,6 +38,7 @@ app.use((err, req, res, next) => {
 });
 
 app.post('/webhooks', clerkWebhooks)
+app.use('/api/company', companyRoutes)
 
 
 // Port

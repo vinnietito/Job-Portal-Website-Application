@@ -6,7 +6,7 @@ const registerCompany = async (req, res) => {
 }
 
 // Company login
-const loginCompany = async (req, res) => {
+export const loginCompany = async (req, res) => {
 
 }
 
