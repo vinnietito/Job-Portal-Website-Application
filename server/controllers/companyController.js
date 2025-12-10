@@ -1,6 +1,6 @@
 
 // Register a new company
-const registerComany = async (req, res) => {
+const registerCompany = async (req, res) => {
 
 
 }
