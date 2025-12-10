@@ -1,5 +1,5 @@
 import express from 'express'
-import { changeJobApplicationStatus, changeVisibility, getCompanyJobApplicants, getCompanyPostedJobs, loginCompany, postJob, registerCompany } from '../controllers/companyController.js'
+import { changeJobApplicationStatus, changeVisibility, getCompanyData, getCompanyJobApplicants, getCompanyPostedJobs, loginCompany, postJob, registerCompany } from '../controllers/companyController.js'
 
 const router = express.Router()
 
@@ -10,10 +10,10 @@ router.post('/register', registerCompany)
 router.post('/login', loginCompany)
 
 // Get Company Data
-router.get('/compant', getCompanyData)
+router.get('/company', getCompanyData)
 
 // Post a job
-router.post('post-job', postJob)
+router.post('/post-job', postJob)
 
 // Get Applicants Data of Company
 router.get('/applicants', getCompanyJobApplicants)
