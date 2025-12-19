@@ -55,6 +55,10 @@ export const registerCompany = async (req, res) => {
 // Company login
 export const loginCompany = async (req, res) => {
 
+    const { email, password } = req.body
+
+    try
+
 }
 
 // Get comapany data
