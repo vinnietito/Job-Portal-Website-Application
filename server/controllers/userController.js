@@ -15,3 +15,8 @@ export const applyForJob = async (req, res) => {
 export const getUserJobApplications = async (req, res) => {
 
 }
+
+// Update user profile (resume)
+export const updateUserResume = async (req, res) => {
+
+}

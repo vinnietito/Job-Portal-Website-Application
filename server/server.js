@@ -10,6 +10,7 @@ import connectDB from "./config/db.js";
 import { clerkWebhooks } from "./controllers/webhooks.js";
 import connectCloudinary from "./config/cloudinary.js";
 import jobRoutes from './routes/jobRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 
 // Initialize Express
 const app = express();
@@ -43,6 +44,8 @@ app.use((err, req, res, next) => {
 app.post('/webhooks', clerkWebhooks)
 app.use('/api/company', companyRoutes)
 app.use('/api/jobs', jobRoutes)
+app.use('/api/users', userRoutes)
+
 
 
 // Port
