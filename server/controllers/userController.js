@@ -52,9 +52,11 @@ export const applyForJob = async (req, res) => {
             jobId,
             Date: Date.now()
         })
+
+        res.json({ success: true, message: "Applied for job successfully" })
         
     } catch (error) {
-        
+        res.json({success:false, message: error.message})        
     }
      
 
