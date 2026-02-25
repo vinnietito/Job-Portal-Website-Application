@@ -59,11 +59,29 @@ export const applyForJob = async (req, res) => {
         res.json({success:false, message: error.message})        
     }
      
-
 }
 
 // Get user applied applications
 export const getUserJobApplications = async (req, res) => {
+
+    try {
+
+        const userId  = req.auth.userid
+
+        const applications = await JobApplication.find({ userId})
+        .populate('companyid', 'name email image')
+        .populate('jobId', 'title description location category salary')
+        .exec()
+
+        if (!applications) {
+            return res.json({ success: false, message: 'No job applications found for this user!!' })
+        }
+
+        return res.json({ success: true, applications })
+        
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
 
 }
 
