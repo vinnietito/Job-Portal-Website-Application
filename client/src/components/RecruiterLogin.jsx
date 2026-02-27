@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import e from 'cors'
 import { AppContext } from '../context/AppContext'
+import axios from 'axios'
 
 const RecruiterLogin = () => {
 
@@ -22,6 +23,24 @@ const RecruiterLogin = () => {
     if (state === "Sign Up" && !isTextDataSubmitted) {
       setIsTextDataSubmitted(true)
     }
+
+    try {
+
+      if (state === "Login") {
+
+        const {data} = await axios.post(backendUrl + '/api/company/login', {email, password})
+
+        if(data.success) {
+          console.log(data);
+        }
+
+      }
+      
+    } catch (error) {
+      
+    }
+
+
   }
 
   useEffect(() => {
