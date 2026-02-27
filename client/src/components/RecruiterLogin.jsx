@@ -3,8 +3,11 @@ import { assets } from '../assets/assets'
 import e from 'cors'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const RecruiterLogin = () => {
+
+  const navigate = useNavigate()
 
   const [state, setState] = useState('Login')
   const [name, setName] = useState('')
@@ -15,7 +18,7 @@ const RecruiterLogin = () => {
 
   const [isTextDataSubmitted, setIsTextDataSubmitted] = useState(false)
 
-  const {setShowRecruiterLogin, backendUrl} = useContext(AppContext)
+  const {setShowRecruiterLogin, backendUrl, setCompanyToken, setCompanyData} = useContext(AppContext)
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -32,6 +35,11 @@ const RecruiterLogin = () => {
 
         if(data.success) {
           console.log(data);
+          setCompanyData(data.company)
+          setCompanyToken(data.token)
+          localStorage.setItem('companyToken', data.token)
+          setShowRecruiterLogin(false)
+          navigate('/dashboard')
         }
 
       }
