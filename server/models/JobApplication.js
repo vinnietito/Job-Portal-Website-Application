@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const JonApplicationSchema = new mongoose.schema({
+const JobApplicationSchema = new mongoose.Schema({
     userId: { type : String, ref: 'User', required: true },
     companyId: { type : mongoose.Schema.Types.ObjectId, ref: 'Company', required: true },
     jobId: { type : mongoose.Schema.Types.ObjectId, ref: 'Job', required: true },

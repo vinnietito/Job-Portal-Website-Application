@@ -5,6 +5,8 @@ export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
+
   const [searchFilter, setSearchFilter] = useState({
     title: '',
     location: ''
@@ -36,7 +38,10 @@ export const AppContextProvider = ({ children }) => {
     searchFilter, setSearchFilter,
     isSearched, setIsSearched,
     jobs, setJobs,
-    showRecruiterLogin, setShowRecruiterLogin
+    showRecruiterLogin, setShowRecruiterLogin,
+    companyToken, setCompanyToken,
+    companyData, setCompanyData,
+    backendUrl
   };
 
   return (
