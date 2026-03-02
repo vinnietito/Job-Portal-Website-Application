@@ -68,9 +68,20 @@ export const AppContextProvider = ({ children }) => {
   // Function to Fetch User data
   const fetchUserData = async () => {
     try {
+
+      const token = await getToken()
+
+      const { data } = await axios.get(backendUrl + '/api/user/user',
+        {headers:{Authorization:`Bearer ${token}`}})
+
+        if (data.success) {
+          setUserData(data.user)
+        } else {
+          toast.error(data.message);
+        }
       
     } catch (error) {
-      
+        toast.error(error.message);
     }
   }
 
@@ -90,11 +101,15 @@ export const AppContextProvider = ({ children }) => {
     }
   }, [companyToken]);
 
+  useEffect(() => {
+    if (user) {
+      fetchUserData();
+    }
+  }, [user])
 
 
   const value = {
     user,
-    setUser,
     searchFilter,
     setSearchFilter,
     isSearched,

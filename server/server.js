@@ -46,7 +46,7 @@ app.use((err, req, res, next) => {
 app.post('/webhooks', clerkWebhooks)
 app.use('/api/company', companyRoutes)
 app.use('/api/jobs', jobRoutes)
-app.use('/api/users', userRoutes)
+app.use('/api/user', userRoutes)
 
 
 
