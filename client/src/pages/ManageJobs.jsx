@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 const ManageJobs = () => {
   const navigate = useNavigate();
 
-  const [jobs, setJobs] = useState(false);
+  const [jobs, setJobs] = useState([]);
 
   const { backendUrl, companyToken } = useContext(AppContext);
 
@@ -56,7 +56,7 @@ const ManageJobs = () => {
             </tr>
           </thead>
           <tbody>
-            {manageJobsData.map((job, index) => (
+            {jobs.map((job, index) => (
               <tr key={index} className="text-gray-700">
                 <td className="py-2 px-4 border-4 max-sm:hidden">
                   {index + 1}
@@ -72,7 +72,7 @@ const ManageJobs = () => {
                   {job.applicants}
                 </td>
                 <td className="py-2 px-4 border-4">
-                  <input className="scale-125 ml-4" type="checkbox" />
+                  <input className="scale-125 ml-4" type="checkbox" checked={job.visible}/>
                 </td>
               </tr>
             ))}
