@@ -18,22 +18,33 @@ const ApplyJob = () => {
 
   const [JobData, setJobData] = useState(null)
 
-  const { jobs } = useContext(AppContext)
+  const { jobs, backendUrl } = useContext(AppContext)
 
   const fetchJob = async () => {
-    const data = jobs.filter(job => job._id === id)
-    if (data.length !== 0) {
-      setJobData(data[0])
-      console.log(data[0])
+
+    try {
+
+      const { data } = await axios.get(backendUrl +` /api/jobs/${id}`)
+
+    if (data.success) {
+      setJobData(data.job)
+
+    } else {
+      toast.error(data.message);
     }
+      
+    } catch (error) {
+      toast.error(error.message);
+    }
+
+    
+    
   }
 
   useEffect(() => {
-    if (jobs.length > 0) {
       fetchJob()
-    }
-
-  }, [id, jobs])
+  
+  }, [id])
 
   return JobData ? (
     <>
