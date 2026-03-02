@@ -26,21 +26,18 @@ export const AppContextProvider = ({ children }) => {
   const fetchJobs = async () => {
 
     try {
-
       const { data } = await axios.get(backendUrl + '/api/jobs')
-
       if (data.success) {
         setJobs(data.jobs)
         console.log(data.jobs);
       } else {
         toast.error(data.message);
+        setJobs(jobsData); // fallback only if API returns error
       }
-      
     } catch (error) {
       toast.error(error.message);
+      setJobs(jobsData); // fallback only if API fails
     }
-
-    setJobs(jobsData);
   };
 
   // Function to fetch company data

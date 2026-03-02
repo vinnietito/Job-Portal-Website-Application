@@ -8,8 +8,8 @@ import kconvert from 'k-convert';
 import moment from 'moment';
 import JobCard from '../components/JobCard';
 import Footer from '../components/Footer'
-
-
+import { toast } from 'react-toastify';
+import axios from 'axios'
 
 
 const ApplyJob = () => {
@@ -24,7 +24,7 @@ const ApplyJob = () => {
 
     try {
 
-      const { data } = await axios.get(backendUrl +` /api/jobs/${id}`)
+      const { data } = await axios.get(backendUrl +`/api/jobs/${id}`)
 
     if (data.success) {
       setJobData(data.job)
@@ -72,7 +72,7 @@ const ApplyJob = () => {
                   </span>
                   <span className='flex items-center gap-1'>
                     <img src={assets.money_icon} alt="" />
-                    CTC: {kconvert.convertTo(JobData.salary)}
+                    Ksh: {kconvert.convertTo(JobData.salary)}
                   </span>
                 </div>
               </div>
