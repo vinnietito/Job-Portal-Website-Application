@@ -129,7 +129,8 @@ export const JobLocations = [
     "Uasin Gishu",
     "Vihiga",
     "Wajir",
-    "West Pokot"
+    "West Pokot",
+    "New York"
 ]
 
 // Sample data for Manage Jobs Page
