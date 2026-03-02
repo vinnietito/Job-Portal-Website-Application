@@ -7,7 +7,15 @@ const Dashboard = () => {
 
   const navigate = useNavigate()
 
-  const { companyData } = useContext(AppContext)
+  const { companyData, setCompanyData, setCompanyToken } = useContext(AppContext)
+
+  // Function to logout for company
+  const logout = () => {
+    setCompanyData(null);
+    localStorage.removeItem('companyToken');
+    setCompanyToken(null);
+    navigate('/');
+  }
 
   return (
     <div className='min-h-screen'>
@@ -23,7 +31,7 @@ const Dashboard = () => {
               <img className='w-8 border rounded-full' src={companyData.image} alt="" />
               <div className='absolute top-0 right-0 z-10 hidden pt-12 text-black rounded group-hover:block'>
                 <ul className='p-2 m-0 text-sm list-none bg-white border rounded-md'>
-                  <li className='px-2 py-1 pr-10 cursor-pointer'>Logout</li>
+                  <li onClick={logout} className='px-2 py-1 pr-10 cursor-pointer'>Logout</li>
                 </ul>
               </div>
             </div>
