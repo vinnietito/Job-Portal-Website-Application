@@ -36,7 +36,7 @@ const ManageJobs = () => {
 
     try {
 
-      const { data } = axios.post(backendUrl + '/api/company/change-visibility',
+      const { data } = await axios.post(backendUrl + '/api/company/change-visibility',
         { id },
         { headers: { token: companyToken }}
       )
