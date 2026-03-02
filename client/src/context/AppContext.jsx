@@ -1,12 +1,16 @@
 import React, { createContext, useEffect, useState } from "react";
-import { jobsData } from "../assets/assets";
+// import { jobsData } from "../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  const {user} = useUser()
+  const {getToken} = useAuth()
 
   const [searchFilter, setSearchFilter] = useState({
     title: "",
@@ -21,6 +25,9 @@ export const AppContextProvider = ({ children }) => {
 
   const [companyToken, setCompanyToken] = useState(null);
   const [companyData, setCompanyData] = useState(null);
+
+  const [ userData, setUserData ] = useState(null)
+  const [ userApplications, setUserApplications ] = useState([])
 
   //Function to fetch jobs
   const fetchJobs = async () => {
@@ -58,6 +65,15 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  // Function to Fetch User data
+  const fetchUserData = async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
   useEffect(() => {
     fetchJobs();
 
@@ -74,7 +90,7 @@ export const AppContextProvider = ({ children }) => {
     }
   }, [companyToken]);
 
-  const [user, setUser] = useState(null);
+
 
   const value = {
     user,
