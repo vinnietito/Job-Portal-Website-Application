@@ -59,10 +59,10 @@ const Applications = () => {
         <h2 className='text-xl font-semibold'>Your Resume</h2>
         <div className='flex gap-2 mb-6 mt-3'>
           {
-            isEdit
+            isEdit || userData && userData.resume === ""
               ? <>
                 <label className='flex items-center' htmlFor="resumeUpload">
-                  <p className='bg-blue-100 text-blue-600 px-4 py-2 rounded-lg mr-2'>Select Resume</p>
+                  <p className='bg-blue-100 text-blue-600 px-4 py-2 rounded-lg mr-2'>{resume ? resume.name : "Select Resume"}</p>
                   <input id='resumeUpload' onChange={e => setResume(e.target.files[0])} accept='application/pdf' type="file" hidden />
                   <img src={assets.profile_upload_icon} alt="" />
                 </label>
