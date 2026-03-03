@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { AppContext } from '../context/AppContext'
 import Loading from '../components/Loading'
 import Navbar from '../components/Navbar'
@@ -15,6 +15,8 @@ import axios from 'axios'
 const ApplyJob = () => {
 
   const { id } = useParams()
+
+  const navigate = useNavigate()
 
   const [JobData, setJobData] = useState(null)
 
@@ -48,6 +50,7 @@ const ApplyJob = () => {
       }
 
       if (!userData.resume) {
+        navigate('/applications')
         return toast.error('Please upload your resume to apply for this job')
       }
       

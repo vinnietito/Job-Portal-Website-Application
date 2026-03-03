@@ -123,6 +123,11 @@ export const AppContextProvider = ({ children }) => {
     companyData,
     setCompanyData,
     backendUrl,
+    userData,
+    setUserData,
+    userApplications,
+    setUserApplications,
+    fetchUserData
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
