@@ -37,9 +37,15 @@ const ApplyJob = () => {
       toast.error(error.message);
     }
 
-    
+  }
+
+  const applyHandler = async () => {
+
     
   }
+
+
+
 
   useEffect(() => {
       fetchJob()
