@@ -6,6 +6,8 @@ import { jobsApplied } from '../assets/assets';
 import Footer from '../components/Footer'
 import { AppContext } from '../context/AppContext';
 import { useAuth, useUser } from '@clerk/clerk-react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const Applications = () => {
@@ -26,10 +28,27 @@ const Applications = () => {
 
       const formData = new FormData()
       formData.append('resume', resume)
+
+      const token = await getToken()
+
+      const { data } = await axios.post(backendUrl +'/api/users/update-resume',
+        formData,
+        {headers: { Authorization : `Bearer ${token}`}}
+      )
+
+      if (datasuccess) {
+        toast.success(data.message)
+        await fetchUserData()
+      } else {
+        toast.error(data.message)
+      }
       
     } catch (error) {
-      
+      toast.error(error.message)
     }
+
+    setIsEdit(false)
+    setResume(null)
 
   }
 
