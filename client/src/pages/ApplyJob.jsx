@@ -68,6 +68,7 @@ const ApplyJob = () => {
 
       if (data.success) {
         toast.success(data.message)
+        fetchUserApplications()
       } else {
         toast.error(data.message)
       }
@@ -146,7 +147,12 @@ const ApplyJob = () => {
             {/* Right Section More Jobs */}
             <h2>More jobs from {JobData.companyId.name}</h2>
             {jobs.filter( job => job._id !== JobData._id && job.companyId._id === JobData.companyId._id)
-            .filter( job => true ).slice(0,4)
+            .filter( job => {
+              // Set of AppliedJobsIds
+              const appliedJobsIds = new Set(userApplications.map(app => app.jobId && app.jobId._id))
+              // Return True if the user has not applied for this Job
+              return !appliedJobsIds.has(job._id)
+            } ).slice(0,4)
             .map((job, index) => <JobCard key = {index} job={job} />)}
           </div>
         </div>
