@@ -51,7 +51,7 @@ export const applyForJob = async (req, res) => {
             companyId: jobData.companyId,
             userId,
             jobId,
-            Date: Date.now()
+            date: Date.now()
         })
 
         res.json({ success: true, message: "Applied for job successfully" })
