@@ -85,6 +85,26 @@ export const AppContextProvider = ({ children }) => {
     }
   }
 
+  // Function to fetch user's applied applications data
+  const fetchUserApplications = async () => {
+    try {
+
+      const token = await getToken()
+
+      const { data } = await axios.get(backendUrl + '/api/user/applications',
+        {headers:{Authorization:`Bearer ${token}`}})
+
+        if (data.success) {
+          setUserApplications(data.applications)
+        } else {
+          toast.error(data.message);
+        }
+      
+    } catch (error) {
+        toast.error(error.message);
+    }
+  }
+
   useEffect(() => {
     fetchJobs();
 
@@ -103,7 +123,8 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      fetchUserData();
+      fetchUserData()
+      fetchUserApplications()
     }
   }, [user])
 
@@ -127,7 +148,8 @@ export const AppContextProvider = ({ children }) => {
     setUserData,
     userApplications,
     setUserApplications,
-    fetchUserData
+    fetchUserData,
+    fetchUserApplications
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
