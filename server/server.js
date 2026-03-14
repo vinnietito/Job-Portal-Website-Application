@@ -43,7 +43,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Internal Server Error" });
 });
 
-app.post('/webhooks', clerkWebhooks)
+app.post(
+  "/webhooks",
+  express.raw({ type: "application/json" }),
+  clerkWebhooks
+);
 app.use('/api/company', companyRoutes)
 app.use('/api/jobs', jobRoutes)
 app.use('/api/user', userRoutes)
