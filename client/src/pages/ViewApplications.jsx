@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
+import Loading from '../components/Loading'
 import { assets, viewApplicationsPageData } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const ViewApplications = () => {
 
@@ -19,7 +21,7 @@ const ViewApplications = () => {
       )
 
       if (data.success) {
-        setApplicants(data.applicants.reverse())
+        setApplicants(data.applications.reverse())
       } else  {
         toast.error(data.message)
       }
