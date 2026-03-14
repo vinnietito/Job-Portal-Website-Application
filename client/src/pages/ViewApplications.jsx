@@ -1,12 +1,40 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { assets, viewApplicationsPageData } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
+import axios from 'axios'
 
 const ViewApplications = () => {
 
   const { backendUrl, companyToken } = useContext(AppContext)
 
   const [applicants, setApplicants] = useState(false)
+
+  // Function to Fetch Company job Application Data
+  const fetchCompanyJobApplications = async () => {
+
+    try {
+
+      const {data} = await axios.get(backendUrl + '/api/company/applicants',
+        {headers: {token: companyToken}}
+      )
+
+      if (data.success) {
+        setApplicants(data.applicants.reverse())
+      } else  {
+        toast.error(data.message)
+      }
+      
+    } catch (error) {
+      toast.error('Failed to fetch applicants')
+    }
+  }
+
+  useEffect(() => {
+    if (companyToken) {
+      fetchCompanyJobApplications()
+    }
+
+  },[companyToken]
 
 
   return (
