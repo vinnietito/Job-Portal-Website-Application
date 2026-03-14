@@ -5,6 +5,7 @@ import User from "../models/User.js";
 // API controller function to manage Clerk User with database
 export const clerkWebhooks = async (req, res) => {
   try {
+    console.log("Webhook received:", req.body); // Log webhook payload
     // Create a Svix instance with clerk webhook secret
     const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
 
@@ -28,6 +29,7 @@ export const clerkWebhooks = async (req, res) => {
           image: data.image_url,
           resume: "",
         };
+        console.log("Creating user:", userData); // Log user creation
         await User.create(userData);
         res.json({});
         break;
@@ -39,21 +41,24 @@ export const clerkWebhooks = async (req, res) => {
           name: data.first_name + " " + data.last_name,
           image: data.image_url,
         };
+        console.log("Updating user:", userData); // Log user update
         await User.findByIdAndUpdate(data.id, userData);
         res.json({});
         break;
       }
 
       case "user.deleted": {
+        console.log("Deleting user:", data.id); // Log user deletion
         await User.findByIdAndDelete(data.id);
         res.json({});
         break;
       }
       default:
+        console.log("Unhandled webhook type:", type); // Log unhandled types
         break;
     }
   } catch (error) {
-    console.log(error.message);
+    console.log("Webhook error:", error.message);
     res.json({ success: false, message: "Webhooks Error" });
   }
 };
