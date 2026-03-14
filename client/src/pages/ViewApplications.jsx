@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { assets, viewApplicationsPageData } from '../assets/assets'
+import { AppContext } from '../context/AppContext'
 
 const ViewApplications = () => {
+
+  const { backendUrl, companyToken } = useContext(AppContext)
+
+  const [applicants, setApplicants] = useState(false)
+
+
   return (
     <div className='container mx-auto p-4'>
       <div>
