@@ -34,10 +34,10 @@ const ViewApplications = () => {
       fetchCompanyJobApplications()
     }
 
-  },[companyToken]
+  },[companyToken])
 
 
-  return (
+  return applicants ? applicants.length === 0 ? ( <div></div>) : (
     <div className='container mx-auto p-4'>
       <div>
         <table className='w-full max-w-4xl bg-white border-gray-200 max-sm:text-sm'>
@@ -52,17 +52,18 @@ const ViewApplications = () => {
             </tr>
           </thead>
           <tbody>
-            {viewApplicationsPageData.map((applicant, index)=>(
+            {applicants.filter( item => item.jobId && item.userId).map((applicant, index)=>(
               <tr key={index} className='text-gray-700'>
                 <td className='py-2 px-4 border-b text-center'>{index +1}</td>
                 <td className='py-2 px-4 border-b text-center flex'>
-                  <img className='w-10 h-10 rounded-full mr-3 max-sm:hidden' src={applicant.imgSrc} alt="" />
-                  <span>{applicant.name}</span>
+                  <img className='w-10 h-10 rounded-full mr-3 max-sm:hidden' src={applicant.userId.image} alt="" />
+                  <span>{applicant.userId.name}</span>
                 </td>
-                <td className='py-2 px-4 border-b max-sm:hidden'>{applicant.jobTitle}</td>
-                <td className='py-2 px-4 border-b max-sm:hidden'>{applicant.location}</td>
+                <td className='py-2 px-4 border-b max-sm:hidden'>{applicant.jobId.title}</td>
+                <td className='py-2 px-4 border-b max-sm:hidden'>{applicant.jobId.location}</td>
                 <td className='py-2 px-4 border-b'>
-                  <a className='bg-blue-50 text-blue-400 px-3 py-1 inline-flex gap-2 items-center' href="" target='_blank'>Resume <img src={assets.resume_download_icon} alt="" /></a>
+                  <a className='bg-blue-50 text-blue-400 px-3 py-1 inline-flex gap-2 items-center' href={applicant.userId.resume} target='_blank'>
+                    Resume <img src={assets.resume_download_icon} alt="" /></a>
                 </td>
                 <td className='py-2 px-4 border-b relative'>
                   <div className='relative inline-block text-left group'>
@@ -79,7 +80,7 @@ const ViewApplications = () => {
         </table>
       </div>
     </div>
-  )
+  ) : <Loading />
 }
 
 export default ViewApplications
