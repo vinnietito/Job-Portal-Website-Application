@@ -10,7 +10,7 @@ import JobCard from '../components/JobCard';
 import Footer from '../components/Footer'
 import { toast } from 'react-toastify';
 import axios from 'axios'
-import { useAuth } from '@clerk/clerk-react'
+import { useAuth, useUser } from '@clerk/clerk-react'
 
 
 const ApplyJob = () => {
@@ -19,13 +19,15 @@ const ApplyJob = () => {
 
   const { getToken } = useAuth()
 
+  const { user } = useUser();
+
   const navigate = useNavigate()
 
   const [JobData, setJobData] = useState(null)
 
   const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
 
-  const { jobs, backendUrl, userData, userApplications, fetchUserApplications } = useContext(AppContext)
+  const { jobs, backendUrl, userData, userApplications, fetchUserApplications, fetchUserData } = useContext(AppContext)
 
   const fetchJob = async () => {
 
@@ -50,8 +52,18 @@ const ApplyJob = () => {
     
     try {
 
-      if (!userData) {
+      // Check if user is logged in via Clerk
+      if (!user) {
         return toast.error('Please login to apply for this job')
+      }
+
+      // If user is logged in but userData is not loaded yet, fetch it first
+      if (!userData) {
+        toast.info('Loading your profile...');
+        await fetchUserData();
+        // Return - the useEffect in AppContext will update userData
+        // User will need to click apply again after data loads
+        return;
       }
 
       if (!userData.resume) {
