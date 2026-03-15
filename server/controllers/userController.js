@@ -55,6 +55,7 @@ export const applyForJob = async (req, res) => {
     try {
         // Check if user exists in our database
         let user = await User.findById(userId);
+        let userIdToUse = userId;
         
         // If not found by Clerk ID, try to find by email
         if (!user) {
@@ -66,7 +67,9 @@ export const applyForJob = async (req, res) => {
                 user = await User.findOne({ email: clerkEmail });
                 
                 if (user) {
-                    console.log('Application: User found by email, will use existing user');
+                    // Use the existing user's _id for the application
+                    userIdToUse = user._id;
+                    console.log('Application: User found by email, using user ID:', userIdToUse);
                 } else {
                     // Create new user if not found by email either
                     const userData = {
@@ -84,7 +87,7 @@ export const applyForJob = async (req, res) => {
             }
         }
         
-        const isAlreadyApplied = await JobApplication.find({jobId,userId})
+        const isAlreadyApplied = await JobApplication.find({jobId, userId: userIdToUse})
         if (isAlreadyApplied.length > 0) {
             return res.json({ success: false, message: "You have already applied for this job" })
         }
@@ -94,7 +97,7 @@ export const applyForJob = async (req, res) => {
         }
         await JobApplication.create({
             companyId: jobData.companyId,
-            userId,
+            userId: userIdToUse,
             jobId,
             date: Date.now()
         })

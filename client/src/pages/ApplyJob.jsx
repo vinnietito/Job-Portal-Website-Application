@@ -94,7 +94,15 @@ const ApplyJob = () => {
 
       if (data.success) {
         toast.success(data.message)
-        fetchUserApplications()
+        // Manually add the application to the list since fetchUserApplications might use a different ID
+        const newApplication = {
+          _id: Date.now(), // Temporary ID
+          jobId: JobData,
+          userId: currentUserData,
+          date: Date.now()
+        };
+        setUserApplications([...userApplications, newApplication]);
+        setIsAlreadyApplied(true);
       } else {
         toast.error(data.message)
       }
