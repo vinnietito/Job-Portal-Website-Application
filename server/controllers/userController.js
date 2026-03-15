@@ -53,6 +53,37 @@ export const applyForJob = async (req, res) => {
     const { jobId } = req.body
     const userId = req.auth.userId
     try {
+        // Check if user exists in our database
+        let user = await User.findById(userId);
+        
+        // If not found by Clerk ID, try to find by email
+        if (!user) {
+            try {
+                const clerkUser = await clerkClient.users.getUser(userId);
+                const clerkEmail = clerkUser.emailAddresses[0]?.emailAddress;
+                
+                // Check if a user with this email already exists
+                user = await User.findOne({ email: clerkEmail });
+                
+                if (user) {
+                    console.log('Application: User found by email, will use existing user');
+                } else {
+                    // Create new user if not found by email either
+                    const userData = {
+                        _id: clerkUser.id,
+                        email: clerkEmail || `${clerkUser.id}@clerk.user`,
+                        name: `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || 'User',
+                        image: clerkUser.imageUrl || '',
+                        resume: ''
+                    };
+                    user = await User.create(userData);
+                    console.log('Application: User created:', user._id);
+                }
+            } catch (err) {
+                console.log('Error in user lookup:', err.message);
+            }
+        }
+        
         const isAlreadyApplied = await JobApplication.find({jobId,userId})
         if (isAlreadyApplied.length > 0) {
             return res.json({ success: false, message: "You have already applied for this job" })
