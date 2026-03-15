@@ -67,11 +67,20 @@ export const AppContextProvider = ({ children }) => {
   };
 
   // Fetch user data (with retry for Clerk webhook delay)
-  const fetchUserData = async (retryCount = 0, maxRetries = 5) => {
+  const fetchUserData = async (retryCount = 0, maxRetries = 8) => {
 
     try {
 
       const token = await getToken();
+      
+      if (!token) {
+        console.log('No token available, retrying...');
+        if (retryCount < maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          return await fetchUserData(retryCount + 1, maxRetries);
+        }
+        return null;
+      }
 
       const { data } = await axios.get(
         backendUrl + "/api/user/user",
@@ -79,24 +88,30 @@ export const AppContextProvider = ({ children }) => {
       );
 
       if (data.success) {
-
+        console.log('User data loaded successfully');
         setUserData(data.user);
+        return data.user;
 
-      } else if (retryCount < maxRetries) {
-
-        // Retry if webhook hasn't created user yet
-        setTimeout(() => fetchUserData(retryCount + 1, maxRetries), 1500);
-
+      } else {
+        console.log('User not found in database:', data.message, 'retrying...');
+        if (retryCount < maxRetries) {
+          // Retry if webhook hasn't created user yet
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          return await fetchUserData(retryCount + 1, maxRetries);
+        }
       }
+
+      return null;
 
     } catch (error) {
-
+      console.log('Error fetching user data:', error.message);
       if (retryCount < maxRetries) {
         // Retry on network errors too
-        setTimeout(() => fetchUserData(retryCount + 1, maxRetries), 1500);
-      } else {
-        console.log(error.message);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        return await fetchUserData(retryCount + 1, maxRetries);
       }
+
+      return null;
 
     }
 

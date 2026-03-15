@@ -17,9 +17,9 @@ const ApplyJob = () => {
 
   const { id } = useParams()
 
-  const { getToken } = useAuth()
+  const { getToken, isLoaded } = useAuth()
 
-  const { user } = useUser();
+  const { user, isLoaded: isUserLoaded } = useUser();
 
   const navigate = useNavigate()
 
@@ -52,21 +52,35 @@ const ApplyJob = () => {
     
     try {
 
+      // Check if Clerk is fully loaded
+      if (!isLoaded || !isUserLoaded) {
+        return toast.info('Please wait...');
+      }
+
       // Check if user is logged in via Clerk
       if (!user) {
         return toast.error('Please login to apply for this job')
       }
 
       // If user is logged in but userData is not loaded yet, fetch it first
-      if (!userData) {
-        toast.info('Loading your profile...');
-        await fetchUserData();
-        // Return - the useEffect in AppContext will update userData
-        // User will need to click apply again after data loads
-        return;
+      let currentUserData = userData;
+      
+      if (!currentUserData) {
+        toast.info('Loading your profile... please wait');
+        currentUserData = await fetchUserData();
+        
+        if (!currentUserData) {
+          // Try one more time with more retries
+          toast.info('Retrying...');
+          currentUserData = await fetchUserData(0, 10);
+        }
+        
+        if (!currentUserData) {
+          return toast.error('Unable to load profile. Please check console for details or try again later.');
+        }
       }
 
-      if (!userData.resume) {
+      if (!currentUserData.resume) {
         navigate('/applications')
         return toast.error('Please upload your resume to apply for this job')
       }
