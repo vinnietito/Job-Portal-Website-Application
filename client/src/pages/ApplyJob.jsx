@@ -27,7 +27,7 @@ const ApplyJob = () => {
 
   const [isAlreadyApplied, setIsAlreadyApplied] = useState(false)
 
-  const { jobs, backendUrl, userData, userApplications, fetchUserApplications, fetchUserData } = useContext(AppContext)
+  const { jobs, backendUrl, userData, userApplications, setUserApplications, fetchUserApplications, fetchUserData } = useContext(AppContext)
 
   const fetchJob = async () => {
 

@@ -110,7 +110,24 @@ export const applyForJob = async (req, res) => {
 // Get user applied applications
 export const getUserJobApplications = async (req, res) => {
     try {
-        const userId = req.auth.userId
+        let userId = req.auth.userId;
+        let user = await User.findById(userId);
+        
+        // If user not found by Clerk ID, try to find by email
+        if (!user) {
+            try {
+                const clerkUser = await clerkClient.users.getUser(userId);
+                const clerkEmail = clerkUser.emailAddresses[0]?.emailAddress;
+                user = await User.findOne({ email: clerkEmail });
+                
+                if (user) {
+                    userId = user._id;  // Use the existing user's ID
+                }
+            } catch (err) {
+                console.log('Error finding user:', err.message);
+            }
+        }
+        
         const applications = await JobApplication.find({ userId })
             .populate('companyId', 'name email image')
             .populate('jobId', 'title description location category salary')
