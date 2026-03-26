@@ -7,6 +7,12 @@ import { clerkClient } from "@clerk/express";
 // Get user Data
 export const getUserData = async(req, res) => {
     const userId = req.auth.userId;
+    
+    // Check if user is authenticated
+    if (!userId) {
+        return res.json({ success: false, message: "User not authenticated" });
+    }
+    
     try {
         let user = await User.findById(userId);
         
@@ -52,6 +58,12 @@ export const getUserData = async(req, res) => {
 export const applyForJob = async (req, res) => {
     const { jobId } = req.body
     const userId = req.auth.userId
+    
+    // Check if user is authenticated
+    if (!userId) {
+        return res.json({ success: false, message: "User not authenticated" });
+    }
+    
     try {
         // Check if user exists in our database
         let user = await User.findById(userId);
@@ -109,8 +121,14 @@ export const applyForJob = async (req, res) => {
 
 // Get user applied applications
 export const getUserJobApplications = async (req, res) => {
+    let userId = req.auth.userId;
+    
+    // Check if user is authenticated
+    if (!userId) {
+        return res.json({ success: false, message: "User not authenticated" });
+    }
+    
     try {
-        let userId = req.auth.userId;
         let user = await User.findById(userId);
         
         // If user not found by Clerk ID, try to find by email
@@ -143,8 +161,14 @@ export const getUserJobApplications = async (req, res) => {
 
 // Update user profile (resume)
 export const updateUserResume = async (req, res) => {
+    const userId = req.auth.userId
+    
+    // Check if user is authenticated
+    if (!userId) {
+        return res.json({ success: false, message: "User not authenticated" });
+    }
+    
     try {
-        const userId = req.auth.userId
         const resumeFile = req.file
         let userData = await User.findById(userId)
         
