@@ -73,12 +73,17 @@ export const applyForJob = async (req, res) => {
     const { jobId } = req.body
     // Use req.auth() as a function (new Clerk API)
     const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
-    const userId = authObj?.userId || req.headers['x-clerk-user-id'] || null;
+    
+    // Try multiple sources for userId
+    const userId = authObj?.userId 
+        || authObj?.sessionClaims?.sub 
+        || req.headers['x-clerk-user-id'] 
+        || null;
     
     // Debug: Check what's in req.auth
     console.log('=== AUTH DEBUG (applyForJob) ===');
-    console.log('typeof req.auth:', typeof req.auth);
-    console.log('authObj:', JSON.stringify(authObj));
+    console.log('authObj.userId:', authObj?.userId);
+    console.log('authObj.sessionClaims?.sub:', authObj?.sessionClaims?.sub);
     console.log('userId:', userId);
     console.log('=============================');
     
@@ -146,12 +151,17 @@ export const applyForJob = async (req, res) => {
 export const getUserJobApplications = async (req, res) => {
     // Use req.auth() as a function (new Clerk API)
     const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
-    let userId = authObj?.userId || req.headers['x-clerk-user-id'] || null;
+    
+    // Try multiple sources for userId
+    let userId = authObj?.userId 
+        || authObj?.sessionClaims?.sub 
+        || req.headers['x-clerk-user-id'] 
+        || null;
     
     // Debug: Check what's in req.auth
     console.log('=== AUTH DEBUG (getUserJobApplications) ===');
-    console.log('typeof req.auth:', typeof req.auth);
-    console.log('authObj:', JSON.stringify(authObj));
+    console.log('authObj.userId:', authObj?.userId);
+    console.log('authObj.sessionClaims?.sub:', authObj?.sessionClaims?.sub);
     console.log('userId:', userId);
     console.log('===================================');
     
@@ -195,12 +205,17 @@ export const getUserJobApplications = async (req, res) => {
 export const updateUserResume = async (req, res) => {
     // Use req.auth() as a function (new Clerk API)
     const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
-    const userId = authObj?.userId || req.headers['x-clerk-user-id'] || null;
+    
+    // Try multiple sources for userId
+    const userId = authObj?.userId 
+        || authObj?.sessionClaims?.sub 
+        || req.headers['x-clerk-user-id'] 
+        || null;
     
     // Debug: Check what's in req.auth
     console.log('=== AUTH DEBUG (updateUserResume) ===');
-    console.log('typeof req.auth:', typeof req.auth);
-    console.log('authObj:', JSON.stringify(authObj));
+    console.log('authObj.userId:', authObj?.userId);
+    console.log('authObj.sessionClaims?.sub:', authObj?.sessionClaims?.sub);
     console.log('userId:', userId);
     console.log('=================================');
     
