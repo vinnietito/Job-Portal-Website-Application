@@ -14,7 +14,15 @@ import jobRoutes from "./routes/jobRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 import { clerkWebhooks } from "./controllers/webhooks.js";
-import { clerkMiddleware, clerkClient } from "@clerk/express";
+import { clerkMiddleware, createClerkClient } from "@clerk/express";
+
+// Initialize Clerk client with secret key
+const clerkClient = createClerkClient({
+  secretKey: process.env.CLERK_SECRET_KEY,
+});
+
+// Log Clerk initialization
+console.log('Clerk secret key loaded:', !!process.env.CLERK_SECRET_KEY);
 
 // Initialize Express
 const app = express();
@@ -40,8 +48,16 @@ app.post(
 // JSON parser for other routes
 app.use(express.json());
 
-// Clerk middleware
-app.use(clerkMiddleware());
+// Clerk middleware with authorized parties
+app.use(clerkMiddleware({
+  authorizedParties: [
+    'http://localhost:5173',
+    'http://localhost:4173',
+    'http://localhost:3000',
+    process.env.CLIENT_URL
+  ].filter(Boolean),
+  debug: true
+}));
 
 // Basic test route
 app.get("/", (req, res) => {

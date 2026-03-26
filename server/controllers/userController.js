@@ -6,7 +6,13 @@ import { clerkClient } from "@clerk/express";
 
 // Get user Data
 export const getUserData = async(req, res) => {
-    const userId = req.auth.userId;
+    const userId = req.auth?.userId;
+    
+    // Debug: Check what's in req.auth
+    console.log('=== AUTH DEBUG ===');
+    console.log('req.auth:', JSON.stringify(req.auth));
+    console.log('userId:', userId);
+    console.log('==================');
     
     // Check if user is authenticated
     if (!userId) {
