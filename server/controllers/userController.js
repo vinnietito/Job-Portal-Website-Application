@@ -6,11 +6,19 @@ import { clerkClient } from "@clerk/express";
 
 // Get user Data
 export const getUserData = async(req, res) => {
-    const userId = req.auth?.userId;
+    // Use req.auth() as a function (new Clerk API)
+    const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
+    
+    // Try multiple sources for userId
+    const userId = authObj?.userId 
+        || authObj?.sessionClaims?.sub 
+        || req.headers['x-clerk-user-id'] 
+        || null;
     
     // Debug: Check what's in req.auth
     console.log('=== AUTH DEBUG ===');
-    console.log('req.auth:', JSON.stringify(req.auth));
+    console.log('authObj.userId:', authObj?.userId);
+    console.log('authObj.sessionClaims?.sub:', authObj?.sessionClaims?.sub);
     console.log('userId:', userId);
     console.log('==================');
     
@@ -63,11 +71,14 @@ export const getUserData = async(req, res) => {
 // Apply for a job
 export const applyForJob = async (req, res) => {
     const { jobId } = req.body
-    const userId = req.auth?.userId
+    // Use req.auth() as a function (new Clerk API)
+    const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
+    const userId = authObj?.userId || req.headers['x-clerk-user-id'] || null;
     
     // Debug: Check what's in req.auth
     console.log('=== AUTH DEBUG (applyForJob) ===');
-    console.log('req.auth:', JSON.stringify(req.auth));
+    console.log('typeof req.auth:', typeof req.auth);
+    console.log('authObj:', JSON.stringify(authObj));
     console.log('userId:', userId);
     console.log('=============================');
     
@@ -133,11 +144,14 @@ export const applyForJob = async (req, res) => {
 
 // Get user applied applications
 export const getUserJobApplications = async (req, res) => {
-    let userId = req.auth?.userId;
+    // Use req.auth() as a function (new Clerk API)
+    const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
+    let userId = authObj?.userId || req.headers['x-clerk-user-id'] || null;
     
     // Debug: Check what's in req.auth
     console.log('=== AUTH DEBUG (getUserJobApplications) ===');
-    console.log('req.auth:', JSON.stringify(req.auth));
+    console.log('typeof req.auth:', typeof req.auth);
+    console.log('authObj:', JSON.stringify(authObj));
     console.log('userId:', userId);
     console.log('===================================');
     
@@ -179,11 +193,14 @@ export const getUserJobApplications = async (req, res) => {
 
 // Update user profile (resume)
 export const updateUserResume = async (req, res) => {
-    const userId = req.auth?.userId
+    // Use req.auth() as a function (new Clerk API)
+    const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
+    const userId = authObj?.userId || req.headers['x-clerk-user-id'] || null;
     
     // Debug: Check what's in req.auth
     console.log('=== AUTH DEBUG (updateUserResume) ===');
-    console.log('req.auth:', JSON.stringify(req.auth));
+    console.log('typeof req.auth:', typeof req.auth);
+    console.log('authObj:', JSON.stringify(authObj));
     console.log('userId:', userId);
     console.log('=================================');
     
