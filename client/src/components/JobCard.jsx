@@ -1,26 +1,36 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { assets } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../context/AppContext'
 
 const JobCard = ({ job }) => {
 
     const navigate = useNavigate()
+    const { userApplications } = useContext(AppContext)
+
+    // Check if user has already applied for this job
+    const hasApplied = userApplications.some(application => application.jobId._id === job._id)
 
     return (
-        <div className='border p-6 shadow rounded'>
-            <div className='flex justify-between items-center'>
+        <div className='p-6 border rounded shadow'>
+            <div className='flex items-center justify-between'>
                 {/* Job Card */}
                 <img className='h-8' src={job.companyId.image} alt="" />
             </div>
-            <h4 className='font-medium text-xl mt-2'>{job.title}</h4>
+            <h4 className='mt-2 text-xl font-medium'>{job.title}</h4>
             <div className='flex items-center gap-3 mt-2 text-xs'>
                 <span className='bg-blue-50 border border-blue-200 px-4 py-1.5 rounded'>{job.location}</span>
                 <span className='bg-red-50 border border-red-200 px-4 py-1.5 rounded'>{job.level}</span>
             </div>
-            <p className='text-gray-500 text-sm mt-4' dangerouslySetInnerHTML={{ __html: job.description.slice(0, 150) }}></p>
-            <div className='mt-4  flex gap-4 text-sm'>
-                <button onClick={()=>{navigate(`/apply-job/${job._id}`); scrollTo(0,0)}} className='bg-blue-600 text-white px-4 py-2 rounded'>Apply now</button>
-                <button onClick={()=>{navigate(`/apply-job/${job._id}`); scrollTo(0,0)}} className='text-gray-500 border border-gray-500 rounded px-4 py-2'>Learn more</button>
+            <p className='mt-4 text-sm text-gray-500' dangerouslySetInnerHTML={{ __html: job.description.slice(0, 150) }}></p>
+            <div className='flex gap-4 mt-4 text-sm'>
+                <button 
+                    onClick={()=>{navigate(`/apply-job/${job._id}`); scrollTo(0,0)}} 
+                    className={`px-4 py-2 rounded ${hasApplied ? 'bg-green-600 text-white' : 'bg-blue-600 text-white'}`}
+                >
+                    {hasApplied ? 'Already Applied' : 'Apply now'}
+                </button>
+                <button onClick={()=>{navigate(`/apply-job/${job._id}`); scrollTo(0,0)}} className='px-4 py-2 text-gray-500 border border-gray-500 rounded'>Learn more</button>
             </div>
         </div>
     )
