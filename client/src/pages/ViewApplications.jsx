@@ -31,6 +31,33 @@ const ViewApplications = () => {
     }
   }
 
+
+  // Function to Update Job Application Status
+  const changeJobApplicationStatus = async (id, status) => {
+
+    try {
+
+      const {data} = await axios.post(backendUrl + '/api/company/change-status',
+        {id, status},
+        {headers: {token: companyToken}}
+      )
+
+      if (data.success) {
+        fetchCompanyJobApplications()
+      } else {
+        toast.error(data.message)
+      }
+      
+    } catch (error) {
+      toast.error(error.message)
+    }
+
+
+  }
+
+
+
+
   useEffect(() => {
     if (companyToken) {
       fetchCompanyJobApplications()
