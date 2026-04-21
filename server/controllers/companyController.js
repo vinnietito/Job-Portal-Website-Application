@@ -117,21 +117,19 @@ export const postJob = async (req, res) => {
 // Get Company job Applicants
 export const getCompanyJobApplicants = async (req, res) => {
   try {
-
-     const companyid = req.company._id
+    const companyid = req.company._id;
 
     // FInd job applications for the user and populate related data
     const applications = await JobApplication.find({ companyId: companyid })
-    .populate('userId', 'name email resume')
-    .populate('jobId', 'title location category level salary')
-    .exec()
-    
-    return res.json({ success: true, applications })
-    
+      .populate("userId", "name email resume")
+      .populate("jobId", "title location category level salary")
+      .exec();
+
+    return res.json({ success: true, applications });
   } catch (error) {
-    res.json({ success: false, message: error.message })
+    res.json({ success: false, message: error.message });
   }
-}
+};
 
 // Get Company Posted Jobs
 export const getCompanyPostedJobs = async (req, res) => {
@@ -141,10 +139,12 @@ export const getCompanyPostedJobs = async (req, res) => {
     const jobs = await Job.find({ companyId: companyId });
 
     // Adding No. of applicants information in data
-    const jobsData = await Promise.all(jobs.map(async (job) => {
-      const apllicants = await JobApplication.find({jobId: job._id});
-      return {...job.toObject(), applicants: apllicants.length}
-    }))
+    const jobsData = await Promise.all(
+      jobs.map(async (job) => {
+        const apllicants = await JobApplication.find({ jobId: job._id });
+        return { ...job.toObject(), applicants: apllicants.length };
+      }),
+    );
 
     res.json({ success: true, jobsData });
   } catch (error) {
@@ -154,8 +154,20 @@ export const getCompanyPostedJobs = async (req, res) => {
 
 // Change Job Application Status
 export const changeJobApplicationStatus = async (req, res) => {
-  
-}
+  try {
+    const { id, status } = req.body;
+
+    // Find Job Application and update status
+    await JobApplication.findOneAndUpdate({ _id: id }, { status });
+
+    res.json({ success: true, message: "Status updated successfully" });
+
+  } catch (error) {
+
+    res.json({ success: false, message: error.message });
+    
+  }
+};
 
 // Change job visibibility
 export const changeVisibility = async (req, res) => {
@@ -181,4 +193,3 @@ export const changeVisibility = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
-
