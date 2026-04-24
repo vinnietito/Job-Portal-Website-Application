@@ -7,45 +7,68 @@ import { AppContext } from "../context/AppContext";
 const Navbar = () => {
   const { openSignIn } = useClerk();
   const { user } = useUser();
-
   const navigate = useNavigate();
-
   const { setShowRecruiterLogin } = useContext(AppContext);
 
   return (
-    <div className="shadow-md w-full fixed top-0 left-0 bg-white px-4 py-2 flex justify-between items-center z-[999]">
+    <div className="shadow-md w-full fixed top-0 left-0 bg-white px-6 py-3 z-[999]">
+      
       <div className="container mx-auto flex justify-between items-center">
-        <img
+
+        {/* LEFT SIDE - LOGO + BRAND NAME */}
+        <div
           onClick={() => navigate("/")}
-          src={assets.logo}
-          alt="logo"
-          className="cursor-pointer h-16 md:h-20 w-auto object-contain"
-        />
+          className="flex items-center gap-3 cursor-pointer"
+        >
+          <img
+            src={assets.logo}
+            alt="logo"
+            className="h-14 md:h-16 w-auto object-contain"
+          />
+
+          <span className="text-lg md:text-xl font-bold text-gray-800">
+            Brighter Monday Kenya
+          </span>
+        </div>
+
+        {/* RIGHT SIDE */}
         {user ? (
-          <div className="flex items-center gap-3">
-            <Link to={"/applications"}>Applied Jobs</Link>
-            <p>|</p>
-            <p className="max-sm:hidden">
-              Hi, {user.firstName + " " + user.lastName}
+          <div className="flex items-center gap-4">
+            <Link
+              to="/applications"
+              className="text-gray-700 hover:text-blue-600 transition"
+            >
+              Applied Jobs
+            </Link>
+
+            <span className="text-gray-400">|</span>
+
+            <p className="max-sm:hidden text-gray-700">
+              {`${user.firstName || ""} ${user.lastName || ""}`.trim()}
             </p>
+
             <UserButton />
           </div>
         ) : (
-          <div className="flex gap-4 max-sm:text-xs">
+          <div className="flex items-center gap-4 max-sm:text-xs">
+
             <button
-              onClick={(e) => setShowRecruiterLogin(true)}
-              className="text-gray-600"
+              onClick={() => setShowRecruiterLogin(true)}
+              className="text-gray-600 hover:text-blue-600 transition"
             >
               Recruiter Login
             </button>
+
             <button
-              onClick={(e) => openSignIn()}
-              className="bg-blue-600 text-white px-6 sm:px-9 py-2 rounded-full"
+              onClick={() => openSignIn()}
+              className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 sm:px-9 py-2 rounded-full"
             >
               Login
             </button>
+
           </div>
         )}
+
       </div>
     </div>
   );
