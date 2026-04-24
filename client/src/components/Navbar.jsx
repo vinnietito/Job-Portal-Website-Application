@@ -17,9 +17,9 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <img
           onClick={() => navigate("/")}
-          className="cursor-pointer h-10 w-auto"
           src={assets.logo}
           alt="logo"
+          className="cursor-pointer h-16 md:h-20 w-auto object-contain"
         />
         {user ? (
           <div className="flex items-center gap-3">
