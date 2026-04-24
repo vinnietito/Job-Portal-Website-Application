@@ -11,7 +11,7 @@ const Navbar = () => {
   const { setShowRecruiterLogin } = useContext(AppContext);
 
   return (
-    <div className="shadow-md w-full fixed top-0 left-0 bg-white px-6 py-3 z-[999]">
+    <div className="shadow-md w-full fixed top-0 left-0 bg-white px-6 py-3 z-999">
       
       <div className="container mx-auto flex justify-between items-center">
 

@@ -6,7 +6,7 @@ const Footer = () => {
     <div className='container px-4 2xl:px-20 mx-auto flex items-center justify-between gap-4 py-3 mt-20'>
       <img width={160} src={assets.logo} alt="" />
       <p className="flex-1 border-t border-gray-200 text-center text-sm text-gray-500 pt-4">
-  © 2025 • Vincent Kimanthi • All rights reserved.
+  © 2026 • Vincent Kimanthi • All rights reserved.
 </p>
 
       <div className='flex gap-2.5'>
