@@ -23,7 +23,7 @@ const Hero = () => {
         <div>
 
             {/* HERO SECTION */}
-            <div className='bg-gradient-to-r from-purple-800 to-purple-950 text-white py-16 text-center mx-2 rounded-xl '>
+            <div className='bg-linear-to-r from-purple-800 to-purple-950 text-white py-16 text-center mx-2 rounded-xl '>
                 <div className="mt-20 text-center">
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4">Over 10,000+ jobs to apply</h2>
                     <p className='mb-8 max-w-xl mx-auto text-sm font-light px-5'>
@@ -59,6 +59,11 @@ const Hero = () => {
                         <img className='h-6' src={assets.samsung_logo} alt="Samsung" />
                         <img className='h-6' src={assets.amazon_logo} alt="Amazon" />
                         <img className='h-6' src={assets.adobe_logo} alt="Adobe" />
+                        <img className='h-6' src={assets.Safaricom_Logo} alt="Safaricom" />
+                        <img className='h-6' src={assets.kcb_logo} alt="KCB" />
+                        <img className='h-6' src={assets.equity_logo} alt="Equity" />
+                        <img className='h-6' src={assets.KenyaAirways_Logo} alt="Kenya Airways" />
+                        <img className='h-6' src={assets.eabl_logo} alt="EABL" />
                     </div>
                 </div>
             </div>

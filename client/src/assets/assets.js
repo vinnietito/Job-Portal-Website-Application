@@ -33,6 +33,14 @@ import lock_icon from './lock_icon.svg'
 import samsung_logo from './samsung_logo.png'
 import adobe_logo from './adobe_logo.png'
 import amazon_logo from './amazon_logo.png'
+import Safaricom_Logo from './Safaricom_Logo.png'
+import kcb_logo from './kcb_logo.png'
+import equity_logo from './equity_logo.png'
+import KenyaAirways_Logo from './KenyaAirways_Logo.png'
+import eabl_logo from './eabl_logo.png'
+
+
+
 
 export const assets = {
     logo,
@@ -69,7 +77,13 @@ export const assets = {
     lock_icon,
     samsung_logo,
     adobe_logo,
-    amazon_logo
+    amazon_logo,
+    Safaricom_Logo,
+    kcb_logo,
+    equity_logo,
+    KenyaAirways_Logo,
+    eabl_logo,
+    
 }
 
 export const JobCategories = [
