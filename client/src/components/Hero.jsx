@@ -49,21 +49,26 @@ const Hero = () => {
                 </div>
             </div>
 
-            <div className='border border-gray-300 shadow-md mx-2 mt-5 p-6 rounded-md flex'>
+            <div className="mx-2 mt-5 p-6 rounded-xl flex border border-white/20 bg-white/60 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300">
                 <div className='flex justify-center gap-10 lg:gap-16 flex-wrap'>
-                    <p className='font-medium'>Trusted by</p>
+                    <p className='font-medium'>Companies Hiring Through Us</p>
                     <div className='flex items-center justify-center gap-6 flex-wrap'>
                         <img className='h-6' src={assets.microsoft_logo} alt="Microsoft" />
-                        <img className='h-6' src={assets.walmart_logo} alt="Walmart" />
+                        <img className='h-6' src={assets.Safaricom_Logo} alt="Safaricom" />
+                        <img className='h-6' src={assets.equity_logo} alt="Equity" />
+                        <img className='h-6' src={assets.samsung_logo} alt="Samsung" />
+                        <img className='h-6' src={assets.kcb_logo} alt="KCB" />
+                        <img className='h-6' src={assets.google_logo} alt="Google" />
+                        <img className='h-6' src={assets.KenyaAirways_Logo} alt="Kenya Airways" />
+                        <img className='h-6' src={assets.eabl_logo} alt="EABL" />
+
+                        {/* <img className='h-6' src={assets.walmart_logo} alt="Walmart" />
                         <img className='h-6' src={assets.accenture_logo} alt="Accenture" />
                         <img className='h-6' src={assets.samsung_logo} alt="Samsung" />
                         <img className='h-6' src={assets.amazon_logo} alt="Amazon" />
-                        <img className='h-6' src={assets.adobe_logo} alt="Adobe" />
-                        <img className='h-6' src={assets.Safaricom_Logo} alt="Safaricom" />
-                        <img className='h-6' src={assets.kcb_logo} alt="KCB" />
-                        <img className='h-6' src={assets.equity_logo} alt="Equity" />
-                        <img className='h-6' src={assets.KenyaAirways_Logo} alt="Kenya Airways" />
-                        <img className='h-6' src={assets.eabl_logo} alt="EABL" />
+                        <img className='h-6' src={assets.adobe_logo} alt="Adobe" /> */}
+                                           
+                                                
                     </div>
                 </div>
             </div>

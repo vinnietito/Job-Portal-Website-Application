@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import logo from "./logo.png";
 import search_icon from "./search_icon.svg";
 import company_icon from "./company_icon.svg";
 import microsoft_logo from "./microsoft_logo.svg";
@@ -38,7 +38,7 @@ import kcb_logo from './kcb_logo.png'
 import equity_logo from './equity_logo.png'
 import KenyaAirways_Logo from './KenyaAirways_Logo.png'
 import eabl_logo from './eabl_logo.png'
-
+import google_logo from './google_logo.png'
 
 
 
@@ -83,6 +83,7 @@ export const assets = {
     equity_logo,
     KenyaAirways_Logo,
     eabl_logo,
+    google_logo,
     
 }
 
