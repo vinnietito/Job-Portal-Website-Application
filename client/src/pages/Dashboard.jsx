@@ -29,7 +29,12 @@ const Dashboard = () => {
       {/* Navbar for Recuriter Panel*/}
       <div className='py-4 shadow'>
         <div className='flex items-center justify-between px-5'>
-          <img onClick={e => navigate('/')} className='cursor-pointer max-sm:w-32' src={assets.logo} alt="" />
+          <img
+            onClick={e => navigate('/')}
+            src={assets.logo}
+            alt="logo"
+            className="object-contain w-auto cursor-pointer h-14 md:h-16"
+          />
           {companyData && (
               <div className='flex items-center gap-3'>
             <p className='max-sm:hidden'>Welcome, {companyData.name}</p>

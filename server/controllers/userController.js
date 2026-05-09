@@ -8,23 +8,24 @@ import { clerkClient } from "@clerk/express";
 export const getUserData = async(req, res) => {
     // Use req.auth() as a function (new Clerk API)
     const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
-    
+
+    // Debug: Log incoming headers and auth object
+    console.log('=== AUTH DEBUG ===');
+    console.log('Incoming headers:', req.headers);
+    console.log('authObj:', authObj);
+
     // Try multiple sources for userId
     const userId = authObj?.userId 
         || authObj?.sessionClaims?.sub 
         || req.headers['x-clerk-user-id'] 
         || null;
-    
-    // Debug: Check what's in req.auth
-    console.log('=== AUTH DEBUG ===');
-    console.log('authObj.userId:', authObj?.userId);
-    console.log('authObj.sessionClaims?.sub:', authObj?.sessionClaims?.sub);
-    console.log('userId:', userId);
+
+    console.log('Resolved userId:', userId);
     console.log('==================');
-    
+
     // Check if user is authenticated
     if (!userId) {
-        return res.json({ success: false, message: "User not authenticated" });
+        return res.status(401).json({ success: false, message: "User not authenticated. No userId found. Check Authorization header and Clerk setup." });
     }
     
     try {
