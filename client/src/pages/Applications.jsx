@@ -77,9 +77,7 @@ const Applications = () => {
                 <button onClick={updateResume} className='px-4 py-2 bg-green-100 border border-green-400 rounded-lg'>Save</button>
               </>
               : <div className='flex gap-2'>
-                <a className='px-4 py-2 text-blue-600 bg-blue-100 rounded-lg' href="">
-                  Resume
-                </a>
+                <span className='px-4 py-2 text-green-600 bg-green-100 rounded-lg'>Resume Uploaded</span>
                 <button onClick={() => setIsEdit(true)} className='px-4 py-2 text-gray-500 border border-gray-300 rounded-lg'>
                   Edit
                 </button>

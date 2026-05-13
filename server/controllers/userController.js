@@ -1,7 +1,9 @@
 import Job from "../models/Job.js";
 import JobApplication from "../models/JobApplication.js";
 import User from "../models/User.js";
-import { v2 as cloudinary } from "cloudinary";
+import { getGridFSBucket } from "../config/gridfs.js";
+import { encryptBuffer } from "../utils/aes256.js";
+import { logApplicationSubmission } from "../utils/auditLog.js";
 import { clerkClient } from "@clerk/express";
 
 // Get user Data
@@ -136,12 +138,16 @@ export const applyForJob = async (req, res) => {
         if (!jobData) {
             return res.json({ success: false, message: "Job not found" })
         }
-        await JobApplication.create({
+        const jobApplication = await JobApplication.create({
             companyId: jobData.companyId,
             userId: userIdToUse,
             jobId,
             date: Date.now()
         })
+        
+        // Log the application submission event
+        logApplicationSubmission(userIdToUse, jobId, req, 'SUCCESS');
+        
         res.json({ success: true, message: "Applied for job successfully" })
     } catch (error) {
         res.json({success:false, message: error.message})        
@@ -203,6 +209,7 @@ export const getUserJobApplications = async (req, res) => {
 }
 
 // Update user profile (resume)
+// Upload and encrypt resume, store in GridFS
 export const updateUserResume = async (req, res) => {
     // Use req.auth() as a function (new Clerk API)
     const authObj = typeof req.auth === 'function' ? req.auth() : req.auth;
@@ -213,29 +220,20 @@ export const updateUserResume = async (req, res) => {
         || req.headers['x-clerk-user-id'] 
         || null;
     
-    // Debug: Check what's in req.auth
-    console.log('=== AUTH DEBUG (updateUserResume) ===');
-    console.log('authObj.userId:', authObj?.userId);
-    console.log('authObj.sessionClaims?.sub:', authObj?.sessionClaims?.sub);
-    console.log('userId:', userId);
-    console.log('=================================');
-    
     // Check if user is authenticated
     if (!userId) {
         return res.json({ success: false, message: "User not authenticated" });
     }
     
     try {
-        const resumeFile = req.file
-        let userData = await User.findById(userId)
-        
+        const resumeFile = req.file;
+        let userData = await User.findById(userId);
         // If user not found, try to find by email or create
         if (!userData) {
             try {
                 const clerkUser = await clerkClient.users.getUser(userId);
                 const clerkEmail = clerkUser.emailAddresses[0]?.emailAddress;
                 userData = await User.findOne({ email: clerkEmail });
-                
                 if (!userData) {
                     const userDataNew = {
                         _id: clerkUser.id,
@@ -250,14 +248,28 @@ export const updateUserResume = async (req, res) => {
                 return res.json({ success: false, message: "User not found" });
             }
         }
-        
         if (resumeFile) {
-            const resumeUpload = await cloudinary.uploader.upload(resumeFile.path)
-            userData.resume = resumeUpload.secure_url
+            // Encrypt the resume buffer
+            const encryptedBuffer = encryptBuffer(resumeFile.buffer);
+            // Store in GridFS
+            const bucket = getGridFSBucket();
+            const uploadStream = bucket.openUploadStream(resumeFile.originalname, {
+                contentType: resumeFile.mimetype,
+                metadata: { userId: userData._id }
+            });
+            uploadStream.end(encryptedBuffer, async (err) => {
+                if (err) {
+                    return res.json({ success: false, message: 'Failed to upload resume to GridFS' });
+                }
+                // Save GridFS file ID in user record
+                userData.resume = uploadStream.id.toString();
+                await userData.save();
+                res.json({ success: true, message: 'Resume updated and encrypted successfully' });
+            });
+        } else {
+            res.json({ success: false, message: 'No resume file uploaded' });
         }
-        await userData.save()
-        res.json({ success: true, message: 'Resume updated successfully'})
     } catch (error) {
-        res.json({ success: false, message: error.message })
+        res.json({ success: false, message: error.message });
     }
 }

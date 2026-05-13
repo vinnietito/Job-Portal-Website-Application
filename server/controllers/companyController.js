@@ -4,6 +4,7 @@ import { v2 as cloudinary } from "cloudinary";
 import generateToken from "../utils/generatetoken.js";
 import Job from "../models/Job.js";
 import JobApplication from "../models/JobApplication.js";
+import AuditLog from "../models/AuditLog.js";
 
 // Register a new company
 export const registerCompany = async (req, res) => {
@@ -189,6 +190,37 @@ export const changeVisibility = async (req, res) => {
     await job.save();
 
     res.json({ success: true, job });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Get Audit Logs - Retrieve resume decryption and application events
+export const getAuditLogs = async (req, res) => {
+  try {
+    const recruiterId = req.company._id;
+    const { eventType, applicantId, startDate, endDate } = req.query;
+
+    // Build filter
+    const filters = {
+      recruiterId: recruiterId.toString()
+    };
+
+    if (eventType) filters.eventType = eventType;
+    if (applicantId) filters.applicantId = applicantId;
+
+    if (startDate || endDate) {
+      filters.timestamp = {};
+      if (startDate) filters.timestamp.$gte = new Date(startDate);
+      if (endDate) filters.timestamp.$lte = new Date(endDate);
+    }
+
+    const logs = await AuditLog.find(filters)
+      .sort({ timestamp: -1 })
+      .limit(100)
+      .lean();
+
+    res.json({ success: true, logs });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }

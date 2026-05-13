@@ -1,20 +1,30 @@
 // MUST BE FIRST — before anything else
 import "./config/instrument.js";
 
+import { clerkMiddleware } from "@clerk/express";
+
+import { createClerkClient } from "@clerk/backend";
+
+import resumeRoutes from "./routes/resumeRoutes.js";
+
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import * as Sentry from "@sentry/node";
 
+
 import connectDB from "./config/db.js";
 import connectCloudinary from "./config/cloudinary.js";
+import mongoose from "mongoose";
+import { initGridFS } from "./config/gridfs.js";
 
 import companyRoutes from "./routes/companyRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
+
+
 import { clerkWebhooks } from "./controllers/webhooks.js";
-import { clerkMiddleware, createClerkClient } from "@clerk/express";
 
 // Initialize Clerk client with secret key
 const clerkClient = createClerkClient({
@@ -27,9 +37,11 @@ console.log('Clerk secret key loaded:', !!process.env.CLERK_SECRET_KEY);
 // Initialize Express
 const app = express();
 
+
 // Connect to database
 await connectDB();
 await connectCloudinary();
+initGridFS(mongoose.connection);
 
 // CORS
 app.use(cors());
@@ -50,12 +62,7 @@ app.use(express.json());
 
 // Clerk middleware with authorized parties
 app.use(clerkMiddleware({
-  authorizedParties: [
-    'http://localhost:5173',
-    'http://localhost:4173',
-    'http://localhost:3000',
-    process.env.CLIENT_URL
-  ].filter(Boolean),
+  authorizedParties: ['http://localhost:5173'].filter(Boolean),
   debug: true
 }));
 
@@ -69,10 +76,12 @@ app.get("/debug-sentry", (req, res) => {
   throw new Error("My first Sentry error!");
 });
 
+
 // API Routes
 app.use("/api/company", companyRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/company", resumeRoutes); // recruiter-only resume access
 
 // Sentry error handler (must be after routes)
 Sentry.setupExpressErrorHandler(app);

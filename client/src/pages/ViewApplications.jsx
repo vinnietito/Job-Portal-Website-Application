@@ -27,22 +27,44 @@ const ViewApplications = () => {
     }
   };
 
-  // Function to Update Job Application Status
+  // Function to Download Resume
+  const downloadResume = async (userId) => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/company/resume/${userId}`, {
+        headers: { token: companyToken },
+        responseType: 'blob', // Important for downloading files
+      });
+
+      // Create a blob URL and trigger download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `resume_${userId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      toast.error('Failed to download resume');
+    }
+  };
+
   const changeJobApplicationStatus = async (id, status) => {
     try {
       const { data } = await axios.post(
-        backendUrl + "/api/company/change-status",
+        `${backendUrl}/api/company/change-status`,
         { id, status },
-        { headers: { token: companyToken } },
+        { headers: { token: companyToken } }
       );
 
       if (data.success) {
+        toast.success(data.message);
         fetchCompanyJobApplications();
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error('Failed to update application status');
     }
   };
 
@@ -92,47 +114,31 @@ const ViewApplications = () => {
                       {applicant.jobId.location}
                     </td>
                     <td className="px-4 py-2 border-b">
-                      <a
-                        className="inline-flex items-center gap-2 px-3 py-1 text-blue-400 bg-blue-50"
-                        href={applicant.userId.resume}
-                        target="_blank"
+                      <button
+                        onClick={() => downloadResume(applicant.userId._id)}
+                        className="inline-flex items-center gap-2 px-3 py-1 text-blue-400 bg-blue-50 hover:bg-blue-100"
                       >
-                        Resume <img src={assets.resume_download_icon} alt="" />
-                      </a>
+                        Download Resume <img src={assets.resume_download_icon} alt="" />
+                      </button>
                     </td>
-                    <td className="relative px-4 py-2 border-b">
+                    <td className="px-4 py-2 border-b">
                       {applicant.status === "Pending" ? (
-                        <div className="relative inline-block text-left group">
-                          <button className="text-gray-500 action-button">
-                            ...
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => changeJobApplicationStatus(applicant._id, "Accepted")}
+                            className="px-3 py-1 text-white bg-blue-600 rounded hover:bg-blue-700"
+                          >
+                            Accept
                           </button>
-                          <div className="absolute top-0 right-0 z-10 hidden w-32 mt-2 bg-white border border-gray-200 rounded shadow md:left-0 group-hover:block">
-                            <button
-                              onClick={() =>
-                                changeJobApplicationStatus(
-                                  applicant._id,
-                                  "Accepted",
-                                )
-                              }
-                              className="block w-full px-4 py-2 text-left text-blue-500 hover:bg-gray-100"
-                            >
-                              Accept
-                            </button>
-                            <button
-                              onClick={() =>
-                                changeJobApplicationStatus(
-                                  applicant._id,
-                                  "Rejected",
-                                )
-                              }
-                              className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
-                            >
-                              Reject
-                            </button>
-                          </div>
+                          <button
+                            onClick={() => changeJobApplicationStatus(applicant._id, "Rejected")}
+                            className="px-3 py-1 text-white bg-red-600 rounded hover:bg-red-700"
+                          >
+                            Reject
+                          </button>
                         </div>
                       ) : (
-                        <div>{applicant.status}</div>
+                        <div className="font-semibold">{applicant.status}</div>
                       )}
                     </td>
                   </tr>
