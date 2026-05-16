@@ -50,22 +50,27 @@ const Navbar = () => {
             <UserButton />
           </div>
         ) : (
-          <div className="flex items-center gap-4 max-sm:text-xs">
-
+          <div className="flex items-center gap-3 max-sm:text-xs">
             <button
               onClick={() => setShowRecruiterLogin(true)}
-              className="text-gray-600 hover:text-blue-600 transition"
+              className="rounded-full border border-slate-300 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100 transition"
             >
               Recruiter Login
             </button>
 
+            <Link
+              to="/admin"
+              className="rounded-full border border-blue-600 bg-blue-50 px-4 py-2 text-blue-700 hover:bg-blue-100 transition"
+            >
+              Admin
+            </Link>
+
             <button
               onClick={() => openSignIn()}
-              className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 sm:px-9 py-2 rounded-full"
+              className="rounded-full bg-blue-600 px-5 py-2 text-white shadow-lg shadow-blue-500/10 hover:bg-blue-700 transition"
             >
-              Login
+              Job Seeker Login
             </button>
-
           </div>
         )}
 

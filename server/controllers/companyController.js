@@ -36,6 +36,7 @@ export const registerCompany = async (req, res) => {
       email,
       password: hashPassword,
       image: imageUpload.secure_url,
+      verified: false,
     });
 
     res.json({
@@ -45,6 +46,7 @@ export const registerCompany = async (req, res) => {
         name: company.name,
         email: company.email,
         image: company.image,
+        verified: company.verified,
       },
       token: generateToken(company._id),
     });
@@ -60,6 +62,10 @@ export const loginCompany = async (req, res) => {
   try {
     const company = await Company.findOne({ email });
 
+    if (!company) {
+      return res.json({ success: false, message: "Invalid email or password" });
+    }
+
     if (await bcrypt.compare(password, company.password)) {
       res.json({
         success: true,
@@ -67,6 +73,7 @@ export const loginCompany = async (req, res) => {
           _id: company._id,
           name: company.name,
           email: company.email,
+          verified: company.verified,
         },
         token: generateToken(company._id),
       });
@@ -86,6 +93,106 @@ export const getCompanyData = async (req, res) => {
     res.json({ success: true, company });
   } catch (error) {
     res.json({ success: false, message: error.message });
+  }
+};
+
+export const verifyRecruiter = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+
+    if (!companyId) {
+      return res.status(400).json({ success: false, message: 'Recruiter ID is required' });
+    }
+
+    const company = await Company.findById(companyId);
+    if (!company) {
+      return res.status(404).json({ success: false, message: 'Recruiter not found' });
+    }
+
+    if (company.verified) {
+      return res.json({ success: true, message: 'Recruiter is already verified', company: { _id: company._id, verified: true } });
+    }
+
+    company.verified = true;
+    await company.save();
+
+    res.json({ success: true, message: 'Recruiter verified successfully', company: { _id: company._id, verified: company.verified } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Recruiter requests verification (called by recruiter)
+export const requestVerification = async (req, res) => {
+  try {
+    const companyId = req.company?._id;
+
+    if (!companyId) return res.status(401).json({ success: false, message: 'Not authorized' });
+
+    const company = await Company.findById(companyId);
+    if (!company) return res.status(404).json({ success: false, message: 'Company not found' });
+
+    if (company.verified) return res.json({ success: true, message: 'Company already verified' });
+
+    if (company.verificationRequested) return res.json({ success: true, message: 'Verification already requested' });
+
+    company.verificationRequested = true;
+    company.verificationRequestedAt = new Date();
+    await company.save();
+
+    res.json({ success: true, message: 'Verification requested. Admin will review your request.' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Admin login using the configured secret
+export const adminLogin = async (req, res) => {
+  try {
+    const { password } = req.body;
+    const secret = process.env.ADMIN_TOKEN || process.env.ADMIN_PASSWORD;
+
+    if (!secret) {
+      return res.status(500).json({ success: false, message: 'Admin secret is not configured on the server.' });
+    }
+
+    if (!password || password !== secret) {
+      return res.status(401).json({ success: false, message: 'Invalid admin password.' });
+    }
+
+    return res.json({ success: true, token: secret, message: 'Admin login successful.' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Admin: list pending verification requests
+export const getPendingRequests = async (req, res) => {
+  try {
+    const pending = await Company.find({ verificationRequested: true, verified: false }).select('name email image verificationRequestedAt');
+    res.json({ success: true, pending });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Admin: dashboard overview with verified and pending recruiter stats
+export const getAdminOverview = async (req, res) => {
+  try {
+    const totalCompanies = await Company.countDocuments();
+    const pending = await Company.find({ verificationRequested: true, verified: false }).select('name email image verificationRequestedAt');
+    const verified = await Company.find({ verified: true }).select('name email image verificationRequestedAt');
+
+    res.json({
+      success: true,
+      totalCompanies,
+      pendingCount: pending.length,
+      verifiedCount: verified.length,
+      pending,
+      verified,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 

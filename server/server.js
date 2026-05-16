@@ -9,9 +9,13 @@ import resumeRoutes from "./routes/resumeRoutes.js";
 
 import express from "express";
 import cors from "cors";
-import "dotenv/config";
+import dotenv from "dotenv";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 import * as Sentry from "@sentry/node";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: __dirname + '/.env' });
 
 import connectDB from "./config/db.js";
 import connectCloudinary from "./config/cloudinary.js";

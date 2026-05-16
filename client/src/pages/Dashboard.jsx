@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
+import RequestVerification from '../components/RequestVerification'
 
 const Dashboard = () => {
 
@@ -38,6 +39,9 @@ const Dashboard = () => {
           {companyData && (
               <div className='flex items-center gap-3'>
             <p className='max-sm:hidden'>Welcome, {companyData.name}</p>
+            <div className='max-sm:hidden'>
+              <RequestVerification />
+            </div>
             <div className='relative group'>
               <img className='w-8 border rounded-full' src={companyData.image} alt="" />
               <div className='absolute top-0 right-0 z-10 hidden pt-12 text-black rounded group-hover:block'>

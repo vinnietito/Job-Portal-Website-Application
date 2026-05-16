@@ -1,10 +1,13 @@
 import React, { useContext, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { useClerk } from '@clerk/clerk-react'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
 
 const Hero = () => {
 
-    const { setSearchFilter, setIsSearched } = useContext(AppContext)
+    const { setSearchFilter, setIsSearched, setShowRecruiterLogin } = useContext(AppContext)
+    const { openSignIn } = useClerk()
 
     const titleRef = useRef(null)
     const locationRef = useRef(null)
@@ -30,6 +33,21 @@ const Hero = () => {
                         Your Next Big Career Move Starts Right Here - Explore the Best Job Opportunities
                         and Take the First Step Toward Your Future!
                     </p>
+
+                    <div className='flex flex-col sm:flex-row items-center justify-center gap-3 mb-8'>
+                        <a href='#job-list' className='rounded-full bg-white px-6 py-3 text-sm font-semibold text-purple-950 shadow-lg shadow-slate-200 transition hover:-translate-y-0.5'>
+                            Browse Jobs
+                        </a>
+                        <button onClick={() => setShowRecruiterLogin(true)} className='rounded-full border border-white/70 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-purple-950'>
+                            Recruiter Portal
+                        </button>
+                        <button onClick={() => openSignIn()} className='rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600'>
+                            Job Seeker Login
+                        </button>
+                        <Link to='/admin' className='rounded-full border border-white/70 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-purple-950'>
+                            Admin Dashboard
+                        </Link>
+                    </div>
 
                     {/* Search Bar */}
                     <div className='flex items-center gap-2 bg-white rounded text-gray-600 max-w-xl mx-auto p-2'>

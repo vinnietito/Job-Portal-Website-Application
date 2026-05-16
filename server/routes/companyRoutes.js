@@ -1,7 +1,7 @@
 import express from 'express'
-import { changeJobApplicationStatus, changeVisibility, getCompanyData, getCompanyJobApplicants, getCompanyPostedJobs, loginCompany, postJob, registerCompany, getAuditLogs } from '../controllers/companyController.js'
+import { changeJobApplicationStatus, changeVisibility, getAdminOverview, getCompanyData, getCompanyJobApplicants, getCompanyPostedJobs, loginCompany, postJob, registerCompany, getAuditLogs, verifyRecruiter, requestVerification, getPendingRequests, adminLogin } from '../controllers/companyController.js'
 import upload from '../config/multer.js'
-import { protectCompany } from '../middleware/authMiddleware.js'
+import { protectCompany, protectAdmin } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -10,6 +10,21 @@ router.post('/register', upload.single('image'), registerCompany)
 
 // Company Login
 router.post('/login', loginCompany)
+
+// Admin Login
+router.post('/admin/login', adminLogin)
+
+// Verify a recruiter account
+router.post('/verify-recruiter/:companyId', protectAdmin, verifyRecruiter)
+
+// Recruiter requests verification
+router.post('/request-verification', protectCompany, requestVerification)
+
+// Admin: list pending verification requests
+router.get('/pending-requests', protectAdmin, getPendingRequests)
+
+// Admin: overview dashboard
+router.get('/admin/overview', protectAdmin, getAdminOverview)
 
 // Get Company Data
 router.get('/company', protectCompany, getCompanyData)
