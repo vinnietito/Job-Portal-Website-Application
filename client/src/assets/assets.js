@@ -36,7 +36,7 @@ import amazon_logo from './amazon_logo.png'
 import Safaricom_Logo from './Safaricom_Logo.png'
 import kcb_logo from './kcb_logo.png'
 import equity_logo from './equity_logo.png'
-import KenyaAirways_Logo from './KenyaAirways_Logo.png'
+import KenyaAirways_logo from './KenyaAirways_logo.png'
 import eabl_logo from './eabl_logo.png'
 import google_logo from './google_logo.png'
 
