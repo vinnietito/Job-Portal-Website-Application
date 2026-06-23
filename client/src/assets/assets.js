@@ -81,7 +81,7 @@ export const assets = {
     Safaricom_Logo,
     kcb_logo,
     equity_logo,
-    KenyaAirways_Logo,
+    KenyaAirways_logo,
     eabl_logo,
     google_logo,
     
