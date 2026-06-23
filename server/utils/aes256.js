@@ -40,6 +40,7 @@ export const decryptBuffer = (encryptedBuffer) => {
     algorithm,
     getKey(),
     iv
+    
   );
 
   return Buffer.concat([

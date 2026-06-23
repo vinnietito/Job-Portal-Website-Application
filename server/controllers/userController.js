@@ -3,7 +3,6 @@ import JobApplication from "../models/JobApplication.js";
 import User from "../models/User.js";
 import { getGridFSBucket } from "../config/gridfs.js";
 import { encryptBuffer } from "../utils/aes256.js";
-import { logApplicationSubmission } from "../utils/auditLog.js";
 import { clerkClient } from "@clerk/express";
 
 // Get user Data
@@ -138,16 +137,12 @@ export const applyForJob = async (req, res) => {
         if (!jobData) {
             return res.json({ success: false, message: "Job not found" })
         }
-        const jobApplication = await JobApplication.create({
+        await JobApplication.create({
             companyId: jobData.companyId,
             userId: userIdToUse,
             jobId,
             date: Date.now()
         })
-        
-        // Log the application submission event
-        logApplicationSubmission(userIdToUse, jobId, req, 'SUCCESS');
-        
         res.json({ success: true, message: "Applied for job successfully" })
     } catch (error) {
         res.json({success:false, message: error.message})        
@@ -219,6 +214,13 @@ export const updateUserResume = async (req, res) => {
         || authObj?.sessionClaims?.sub 
         || req.headers['x-clerk-user-id'] 
         || null;
+    
+    // Debug: Check what's in req.auth
+    console.log('=== AUTH DEBUG (updateUserResume) ===');
+    console.log('authObj.userId:', authObj?.userId);
+    console.log('authObj.sessionClaims?.sub:', authObj?.sessionClaims?.sub);
+    console.log('userId:', userId);
+    console.log('=================================');
     
     // Check if user is authenticated
     if (!userId) {
